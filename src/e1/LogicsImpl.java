@@ -3,8 +3,10 @@ package e1;
 import java.util.*;
 
 public class LogicsImpl implements Logics {
-	
-	private final Pair<Integer,Integer> pawn;
+
+
+
+	private Pair<Integer,Integer> pawn;
 	private Pair<Integer,Integer> knight;
 	private final Random random = new Random();
 	private final int size;
@@ -14,6 +16,23 @@ public class LogicsImpl implements Logics {
         this.pawn = this.randomEmptyPosition();
         this.knight = this.randomEmptyPosition();	
     }
+
+	//Nuovo costruttore per i test.
+	public LogicsImpl(int size, Pair<Integer, Integer> position)
+	{
+		this.size = size;
+		this.pawn = position;
+		this.knight = position;
+	}
+
+	//Setter per i test.
+	public void setKnight(Pair<Integer, Integer> knight) {
+		this.knight = knight;
+	}
+
+	public void setPawn(Pair<Integer, Integer> pawn) {
+		this.pawn = pawn;
+	}
     
 	private final Pair<Integer,Integer> randomEmptyPosition(){
     	Pair<Integer,Integer> pos = new Pair<>(this.random.nextInt(size),this.random.nextInt(size));
