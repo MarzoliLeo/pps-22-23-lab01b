@@ -5,24 +5,21 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LogicsImplTest {
+class LogicsManagerTest {
 
-    private LogicsImpl logic ;
+    private Logics logic ;
     private int sizeOfGUI = 5 ;
-
-    private boolean alwaysvalid;
     
     @BeforeEach
     void setUp() {
-        logic = new LogicsImpl(sizeOfGUI);
+        logic = new LogicManager(sizeOfGUI);
     }
 
     @Test
     void testIfKnightAndPawnEverHits()
     {
-        logic = new LogicsImpl(sizeOfGUI);
-        logic.setKnight(new Pair<>(0,0));
-        logic.setPawn(new Pair<>(1,2));
+        //Prima passo la posizione del pawn poi dello knight.
+        logic = new LogicManager(sizeOfGUI, new Pair<>(1,2), new Pair<>(0,0));
         assertTrue(logic.hit(1,2));
     }
 
@@ -33,7 +30,7 @@ class LogicsImplTest {
         {
             for(int j = 0; j < i ; j++) //columns
             {
-                logic = new LogicsImpl(sizeOfGUI, new Pair<>(i,j));
+                logic = new LogicManager(sizeOfGUI, new Pair<>(i,j) , new Pair<>(i,j));
                 assertFalse(logic.hit(i,j));
             }
         }
@@ -47,7 +44,7 @@ class LogicsImplTest {
         {
             for(int j = 0; j < i ; j++) //columns
             {
-                logic = new LogicsImpl(sizeOfGUI, new Pair<>(i,j));
+                logic = new LogicManager(sizeOfGUI, new Pair<>(i,j) , new Pair<>(i,j));
                 assertTrue(logic.hasKnight(i,j));
             }
         }
@@ -61,7 +58,7 @@ class LogicsImplTest {
         {
             for(int j = 0; j < i ; j++) //columns
             {
-                logic = new LogicsImpl(sizeOfGUI, new Pair<>(i,j));
+                logic = new LogicManager(sizeOfGUI, new Pair<>(i,j) , new Pair<>(i,j));
                 assertTrue(logic.hasPawn(i,j));
             }
         }

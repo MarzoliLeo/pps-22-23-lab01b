@@ -1,6 +1,7 @@
 package e1;
 
 public interface Logics{
+    void setKnight(Pair<Integer, Integer> knight);
     
     /**
      * attempt to move Knight on position row,col, if possible

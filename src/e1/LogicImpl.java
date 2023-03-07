@@ -2,27 +2,26 @@ package e1;
 
 import java.util.*;
 
-public class LogicsImpl implements Logics {
-
-
+class LogicManager implements Logics {
 
 	private Pair<Integer,Integer> pawn;
 	private Pair<Integer,Integer> knight;
 	private final Random random = new Random();
-	private final int size;
+	private int size;
+
 	 
-    public LogicsImpl(int size){
+    public LogicManager(int size){
     	this.size = size;
         this.pawn = this.randomEmptyPosition();
         this.knight = this.randomEmptyPosition();	
     }
 
 	//Nuovo costruttore per i test.
-	public LogicsImpl(int size, Pair<Integer, Integer> position)
+	public LogicManager(int size, Pair<Integer, Integer> pawnpos , Pair<Integer, Integer> knightpos )
 	{
 		this.size = size;
-		this.pawn = position;
-		this.knight = position;
+		this.pawn = pawnpos;
+		this.knight = knightpos;
 	}
 
 	//Setter per i test.
@@ -30,17 +29,45 @@ public class LogicsImpl implements Logics {
 		this.knight = knight;
 	}
 
-	public void setPawn(Pair<Integer, Integer> pawn) {
-		this.pawn = pawn;
-	}
-    
 	private final Pair<Integer,Integer> randomEmptyPosition(){
     	Pair<Integer,Integer> pos = new Pair<>(this.random.nextInt(size),this.random.nextInt(size));
     	// the recursive call below prevents clash with an existing pawn
     	return this.pawn!=null && this.pawn.equals(pos) ? randomEmptyPosition() : pos;
     }
-    
+
+	//Spostato la responsabilità dell'Hit dentro alla classe WinLogic.
 	@Override
+	public boolean hit(int row, int col)
+	{
+		WinLogic win = new WinLogic(size, pawn, knight);
+		return win.hit(row, col);
+	}
+
+	@Override
+	public boolean hasKnight(int row, int col) {
+		return this.knight.equals(new Pair<>(row,col));
+	}
+
+	@Override
+	public boolean hasPawn(int row, int col) {
+		return this.pawn.equals(new Pair<>(row,col));
+	}
+}
+
+
+class WinLogic {
+
+	private Pair<Integer,Integer> pawn;
+	private Pair<Integer,Integer> knight;
+	private int size;
+
+	public WinLogic(int size, Pair<Integer, Integer> pawnpos , Pair<Integer, Integer> knightpos)
+	{
+		this.size = size;
+		this.pawn = pawnpos;
+		this.knight = knightpos;
+	}
+
 	public boolean hit(int row, int col) {
 		if (row<0 || col<0 || row >= this.size || col >= this.size) {
 			throw new IndexOutOfBoundsException();
@@ -53,15 +80,5 @@ public class LogicsImpl implements Logics {
 			return this.pawn.equals(this.knight);
 		}
 		return false;
-	}
-
-	@Override
-	public boolean hasKnight(int row, int col) {
-		return this.knight.equals(new Pair<>(row,col));
-	}
-
-	@Override
-	public boolean hasPawn(int row, int col) {
-		return this.pawn.equals(new Pair<>(row,col));
 	}
 }
